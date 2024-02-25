@@ -8,6 +8,7 @@ A React-based Single Page Application (SPA) designed to interact with the Langua
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Packaging and running with Docker](#packaging and running with Docker)
 - [Built With](#built-with)
 
 ## Getting Started
@@ -49,6 +50,20 @@ npm start
 ## Usage
 
 The application will be running on `http://localhost:3000` by default.
+
+## Packaging and running with Docker
+
+- Build the Docker image:
+
+```bash
+docker build -t languagewire-ui .
+```
+
+- Run the Docker container:
+
+```bash
+docker run -p 3000:3000 languagewire-ui
+```
 
 ## Built With
 
