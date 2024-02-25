@@ -47,6 +47,8 @@ const App: React.FC = () => {
         <Container
             maxWidth="sm"
             sx={{
+                overflow: 'hidden',
+                position: 'fixed',
                 display: 'flex', 
                 flexDirection: 'column', 
                 justifyContent: 'center', 
