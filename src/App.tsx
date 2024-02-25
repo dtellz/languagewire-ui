@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, MenuItem, Typography, Container, Grid, Box } from '@mui/material';
+import { TextField, MenuItem, Typography, Container } from '@mui/material';
+import { APICall, TranslationResponse, TranslationError } from './axios';
+import { isAxiosError } from 'axios';
 
 const languageOptions = [
     'Spanish',
@@ -10,19 +12,36 @@ const languageOptions = [
 ];
 
 const App: React.FC = () => {
-    const [text, setText] = useState('');
-    const [language, setLanguage] = useState('');
-    const [translation, setTranslation] = useState('');
+    const [text, setText] = useState<string>('');
+    const [language, setLanguage] = useState<string>('');
+    const [translation, setTranslation] = useState<string>('');
+    const [error, setError] = useState<string>('');
+
+    const fetchTranslation = async (text: string, lang: string): Promise<void> => {
+        try {
+          const response = await APICall.get<TranslationResponse>(`/translations/translate?text=${text}&lang=${lang.toLowerCase()}`);
+          setTranslation(response.data.translation);
+          setError(''); // Clear any previous errors
+        } catch (error) {
+          if (isAxiosError(error) && error.response) {
+            console.log('DEBUG: error.response.data', error.response.data);
+            const errorResponse = error.response.data as TranslationError;
+            setError(errorResponse.errorType === 'ValueError' && language === '' ? `${errorResponse.errorType} - Select a language to translate` : `${errorResponse.errorType} - Valid Text: Hello. How are you?`);
+          } else {
+            setError('An unexpected error occurred');
+          }
+        }
+      };
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            // Replace with actual translation fetching logic
-            console.log(`Translating "${text}" to ${language.toLowerCase()}`);
-            setTranslation(`${text} ${language}`);
-        }, 1000);
-
-        return () => clearTimeout(timer);
-    }, [text, language]);
+        if (text !== '') {
+            const timer = setTimeout(() => {
+                fetchTranslation(text, language);
+            }, 1000);
+    
+            return () => clearTimeout(timer);
+        }
+    }, [text, language]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Container
@@ -59,7 +78,7 @@ const App: React.FC = () => {
                 ))}
             </TextField>
             <Typography variant="subtitle1" marginTop={2}>
-                Translation: {translation}
+                {error ? `Error: ${error}` : `Translation: ${translation}`}
             </Typography>
         </Container>
     );
