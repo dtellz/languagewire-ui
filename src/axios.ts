@@ -11,7 +11,8 @@ type TranslationError = {
     message: string;
 };
 
-const baseURL = 'http://localhost:8000';
+// const baseURL = 'http://localhost:8000';
+const baseURL = 'https://languagewire-api.onrender.com';
 
 // Setting withCredentials at the Axios instance level
 const APICall: AxiosInstance = axios.create({
