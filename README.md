@@ -8,7 +8,7 @@ A React-based Single Page Application (SPA) designed to interact with the Langua
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Packaging and running with Docker](#packaging and running with Docker)
+- [Packaging and running with Docker](#packaging-and-running-with-Docker)
 - [Built With](#built-with)
 
 ## Getting Started
