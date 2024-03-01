@@ -24,7 +24,6 @@ const App: React.FC = () => {
             setError(''); // Clear any previous errors
         } catch (error) {
             if (isAxiosError(error) && error.response) {
-                console.log('DEBUG: error.response.data', error.response.data);
                 const errorResponse = error.response.data as TranslationError;
                 setError(
                     errorResponse.errorType === 'ValueError' &&
