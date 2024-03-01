@@ -19,17 +19,22 @@ const App: React.FC = () => {
 
     const fetchTranslation = async (text: string, lang: string): Promise<void> => {
         try {
-          const response = await APICall.get<TranslationResponse>(`/translations/translate?text=${text}&lang=${lang.toLowerCase()}`);
-          setTranslation(response.data.translation);
-          setError(''); // Clear any previous errors
+            const response = await APICall.get<TranslationResponse>(`/translations/translate?text=${text}&lang=${lang.toLowerCase()}`);
+            setTranslation(response.data.translation);
+            setError(''); // Clear any previous errors
         } catch (error) {
-          if (isAxiosError(error) && error.response) {
-            console.log('DEBUG: error.response.data', error.response.data);
-            const errorResponse = error.response.data as TranslationError;
-            setError(errorResponse.errorType === 'ValueError' && language === '' ? `${errorResponse.errorType} - Select a language to translate` : `${errorResponse.errorType} - Valid Text: Hello. How are you?`);
-          } else {
-            setError('An unexpected error occurred');
-          }
+            if (isAxiosError(error) && error.response) {
+                console.log('DEBUG: error.response.data', error.response.data);
+                const errorResponse = error.response.data as TranslationError;
+                setError(
+                    errorResponse.errorType === 'ValueError' &&
+                    language === '' ?
+                    `${errorResponse.errorType} - Select a language to translate` :
+                    `${errorResponse.errorType} - Valid Text: Hello. How are you?`
+                );
+            } else {
+                setError('An unexpected error occurred');
+            }
         }
       };
 
